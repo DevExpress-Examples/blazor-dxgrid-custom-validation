@@ -1,0 +1,86 @@
+﻿@page "/"
+
+@using CustomValidation.Models
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<NorthwindContext> NorthwindContextFactory
+@implements IDisposable
+
+<DxGrid Data="GridDataSource"
+        EditModelSaving="OnEditModelSaving"
+        KeyFieldName="EmployeeId">
+    <Columns>
+        <DxGridCommandColumn DeleteButtonVisible="false" />
+        <DxGridDataColumn FieldName="FirstName" />
+        <DxGridDataColumn FieldName="LastName" />
+        <DxGridDataColumn FieldName="Title" />
+        <DxGridDataColumn FieldName="HireDate" />
+    </Columns>
+    <EditFormTemplate Context="editFormContext">
+        @{
+            var employee = (Employee)editFormContext.EditModel;
+        }
+        <DxFormLayout>
+            <DxFormLayoutItem Caption="First Name:">
+                <DxTextBox @bind-Text="@employee.FirstName" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Last Name:">
+                <DxTextBox @bind-Text="@employee.LastName" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Title:">
+                <DxTextBox @bind-Text="@employee.Title" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem Caption="Hire Date:">
+                <DxDateEdit @bind-Date="@employee.HireDate" />
+            </DxFormLayoutItem>
+            <DxFormLayoutItem ColSpanMd="12">
+                <ValidationSummary />
+            </DxFormLayoutItem>
+        </DxFormLayout>
+    </EditFormTemplate>
+    <CustomValidators>
+        <MyCustomValidator @ref="customValidator" />
+    </CustomValidators>
+</DxGrid>
+
+@code {
+    IEnumerable<object> GridDataSource { get; set; }
+    NorthwindContext Northwind { get; set; }
+    private MyCustomValidator customValidator;
+
+    protected override async Task OnInitializedAsync() {
+        Northwind = NorthwindContextFactory.CreateDbContext();
+        GridDataSource = await Northwind.Employees.ToListAsync();
+    }
+
+    async Task OnEditModelSaving(GridEditModelSavingEventArgs e) {
+        var editModel = (Employee)e.EditModel;
+        var dataItem = e.IsNew ? new Employee() : Northwind.Employees.Find(editModel.EmployeeId);
+        if (dataItem != null) {
+            customValidator.ClearErrors();
+            var errors = new Dictionary<string, List<string>>();
+            if (editModel.Title == null || !editModel.Title.Contains("Sales")) {
+                errors.Add(nameof(editModel.Title),
+                    new() {
+                    "The Title field value should contain 'Sales'."
+                    });
+            }
+            if (errors.Any()) {
+                customValidator.DisplayErrors(errors);
+                e.Cancel = true;
+                return;
+            }
+            dataItem.FirstName = editModel.FirstName;
+            dataItem.LastName = editModel.LastName;
+            dataItem.Title = editModel.Title;
+            dataItem.HireDate = editModel.HireDate;
+            if (e.IsNew)
+                await Northwind.AddAsync(dataItem);
+            await Northwind.SaveChangesAsync();
+            GridDataSource = await Northwind.Employees.ToListAsync();
+        }
+    }
+
+    public void Dispose() {
+        Northwind?.Dispose();
+    }
+}
