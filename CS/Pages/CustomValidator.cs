@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -9,6 +9,9 @@ namespace CustomValidation.Pages {
 
         [CascadingParameter]
         private EditContext CurrentEditContext { get; set; }
+
+        [Parameter]
+        public Action<EditContext> DataItemValidating { get; set; }
 
         protected override void OnInitialized() {
             if(CurrentEditContext == null) {
@@ -22,16 +25,15 @@ namespace CustomValidation.Pages {
             messageStore = new(CurrentEditContext);
 
             CurrentEditContext.OnValidationRequested += (s, e) =>
-                messageStore.Clear();
+                DataItemValidating.Invoke(CurrentEditContext);
             CurrentEditContext.OnFieldChanged += (s, e) =>
-                messageStore.Clear(e.FieldIdentifier);
+                DataItemValidating.Invoke(CurrentEditContext);
         }
 
         public void DisplayErrors(Dictionary<string, List<string>> errors) {
             foreach(var err in errors) {
                 messageStore.Add(CurrentEditContext.Field(err.Key), err.Value);
             }
-
             CurrentEditContext.NotifyValidationStateChanged();
         }
 
