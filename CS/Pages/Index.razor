@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 
 @using CustomValidation.Models
 @using Microsoft.EntityFrameworkCore
@@ -38,7 +38,7 @@
         </DxFormLayout>
     </EditFormTemplate>
     <CustomValidators>
-        <MyCustomValidator @ref="customValidator" />
+        <MyCustomValidator @ref="customValidator" DataItemValidating="ValidateGridData" />
     </CustomValidators>
 </DxGrid>
 
@@ -46,6 +46,19 @@
     IEnumerable<object> GridDataSource { get; set; }
     NorthwindContext Northwind { get; set; }
     private MyCustomValidator customValidator;
+
+    void ValidateGridData(EditContext e) {
+        var editModel = (Employee)e.Model;
+        customValidator.ClearErrors();
+        var errors = new Dictionary<string, List<string>>();
+        if (editModel.Title == null || !editModel.Title.Contains("Sales")) {
+            errors.Add(nameof(editModel.Title),
+                new() { "The Title field value should contain 'Sales'."});
+        }
+        if (errors.Any())
+            customValidator.DisplayErrors(errors);
+        return;
+    }
 
     protected override async Task OnInitializedAsync() {
         Northwind = NorthwindContextFactory.CreateDbContext();
@@ -56,19 +69,6 @@
         var editModel = (Employee)e.EditModel;
         var dataItem = e.IsNew ? new Employee() : Northwind.Employees.Find(editModel.EmployeeId);
         if (dataItem != null) {
-            customValidator.ClearErrors();
-            var errors = new Dictionary<string, List<string>>();
-            if (editModel.Title == null || !editModel.Title.Contains("Sales")) {
-                errors.Add(nameof(editModel.Title),
-                    new() {
-                    "The Title field value should contain 'Sales'."
-                    });
-            }
-            if (errors.Any()) {
-                customValidator.DisplayErrors(errors);
-                e.Cancel = true;
-                return;
-            }
             dataItem.FirstName = editModel.FirstName;
             dataItem.LastName = editModel.LastName;
             dataItem.Title = editModel.Title;
