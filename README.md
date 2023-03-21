@@ -42,7 +42,7 @@ Follow the steps below to implement custom validation in the Grid component:
     }
     ```
 
-5. Declare the validator component in the Grid's [CustomValidators](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.CustomValidators) template. In the validator component's `DataItemValidating` event handler, check field values and add names of fields that failed validation with error messages to the dictionary.
+4. Declare the validator component in the Grid's [CustomValidators](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.CustomValidators) template. In the validator component's `DataItemValidating` event handler, check field values and add names of fields that failed validation with error messages to the dictionary.
 
     ```razor
     <DxGrid>
@@ -62,7 +62,7 @@ Follow the steps below to implement custom validation in the Grid component:
     }
     ```
 
-6. After you handle `DataItemValidating` event, get the dictionary from the event arguments and write data from this dictionary to the message store. Call the edit context's [NotifyValidationStateChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.notifyvalidationstatechanged?view=aspnetcore-7.0) method to notify the Grid that the validation state was changed and display error messages.
+5. After you handle `DataItemValidating` event, get the dictionary from the event arguments and write data from this dictionary to the message store. Call the edit context's [NotifyValidationStateChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.notifyvalidationstatechanged?view=aspnetcore-7.0) method to notify the Grid that the validation state was changed and display error messages.
 
     ```cs
     void ValidateData() {
