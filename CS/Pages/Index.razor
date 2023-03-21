@@ -38,26 +38,19 @@
         </DxFormLayout>
     </EditFormTemplate>
     <CustomValidators>
-        <MyCustomValidator @ref="customValidator" DataItemValidating="ValidateGridData" />
+        <MyCustomValidator DataItemValidating="ValidateGridData" />
     </CustomValidators>
 </DxGrid>
 
 @code {
     IEnumerable<object> GridDataSource { get; set; }
     NorthwindContext Northwind { get; set; }
-    private MyCustomValidator customValidator;
 
-    void ValidateGridData(EditContext e) {
-        var editModel = (Employee)e.Model;
-        customValidator.ClearErrors();
-        var errors = new Dictionary<string, List<string>>();
-        if (editModel.Title == null || !editModel.Title.Contains("Sales")) {
-            errors.Add(nameof(editModel.Title),
-                new() { "The Title field value should contain 'Sales'."});
+    void ValidateGridData(ValidationMessageStoreEventArgs e) {
+        var employee = (Employee)e.EditModel;
+        if (employee.Title == null || !employee.Title.Contains("Sales")) {
+            e.AddError(nameof(employee.Title), "The Title field value should contain 'Sales'.");
         }
-        if (errors.Any())
-            customValidator.DisplayErrors(errors);
-        return;
     }
 
     protected override async Task OnInitializedAsync() {
