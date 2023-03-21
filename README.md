@@ -62,7 +62,7 @@ Follow the steps below to implement custom validation in a Grid component:
     }
     ```
 
-5. After you handle the `DataItemValidating` event, get the dictionary from the event arguments and write data from this dictionary to the message store. Call the edit context's [NotifyValidationStateChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.notifyvalidationstatechanged?view=aspnetcore-7.0) method to notify the Grid that the validation state was changed and display error messages.
+5. After you handle the `DataItemValidating` event, get the dictionary from the event arguments and write data from this dictionary to the validation message store. Call the edit context's [NotifyValidationStateChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.notifyvalidationstatechanged?view=aspnetcore-7.0) method to notify the Grid that the validation state was changed and display error messages.
 
     ```cs
     void ValidateData() {
