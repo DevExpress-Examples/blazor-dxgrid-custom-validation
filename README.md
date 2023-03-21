@@ -4,13 +4,13 @@
 <!-- default badges end -->
 # Grid for Blazor - How to implement custom validation
 
-This example demonstrates how to create a custom validator component and use it to validate the [Devexpress Blazor Grid](https://docs.devexpress.com/Blazor/403143/grid). In the example, the `MyCustomValidator` component checks the **Title** field value and displays an error message if the value does not contain the **Sales** word.
+This example demonstrates how to create a custom validator component and use it to validate data in the [Devexpress Blazor Grid](https://docs.devexpress.com/Blazor/403143/grid). In the example, the `MyCustomValidator` component checks the **Title** field value and displays an error message if the value does not contain the **Sales** word.
 
 ![Implement Custom Validation in the Grid](/images/custom-validation.png)
 
 ## Overview
 
-Follow the steps below to implement custom validation in the Grid component:
+Follow the steps below to implement custom validation in a Grid component:
 
 1. Add a [Grid](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid) component to a page and bind the component to data.
 2. Enable editing operations in the Grid as described in the following topic: [Edit Data and Validate Input](https://docs.devexpress.com/Blazor/403454/grid/edit-data-and-validate-input).
