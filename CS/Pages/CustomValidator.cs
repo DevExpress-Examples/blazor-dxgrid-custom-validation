@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CustomValidation.Pages {
     public class ValidationMessageStoreEventArgs : EventArgs {
