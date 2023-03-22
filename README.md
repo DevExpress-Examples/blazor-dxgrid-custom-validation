@@ -14,9 +14,9 @@ Follow the steps below to implement custom validation in a Grid component:
 
 1. Add a [Grid](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid) component to a page and bind the component to data.
 
-2. Enable editing operations in the Grid as described in the following topic: [Edit Data and Validate Input](https://docs.devexpress.com/Blazor/403454/grid/edit-data-and-validate-input).
+2. Enable edit operations in the Grid as described in the following topic: [Edit Data and Validate Input](https://docs.devexpress.com/Blazor/403454/grid/edit-data-and-validate-input).
 
-3. Create a [validator component](https://learn.microsoft.com/en-us/aspnet/core/blazor/forms-and-input-components?view=aspnetcore-7.0#validator-components) that stores names of fields that failed validation and corresponding validation messages. Implement a `DataItemValidating` event that accepts the edit [model](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.model?view=aspnetcore-7.0) and a dictionary for field names and error messages as arguments. Invoke the event when the [edit context](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext?view=aspnetcore-7.0)'s [OnValidationRequested](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.onvalidationrequested?view=aspnetcore-7.0) and [OnFieldChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.onfieldchanged?view=aspnetcore-7.0) events occur.
+3. Create a [validator component](https://learn.microsoft.com/en-us/aspnet/core/blazor/forms-and-input-components?view=aspnetcore-7.0#validator-components) that stores names of the fields that failed validation and the corresponding validation messages. Implement a `DataItemValidating` event that accepts the edit [model](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.model?view=aspnetcore-7.0) and a dictionary for field names and error messages as arguments. Invoke the event when the [edit context](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext?view=aspnetcore-7.0)'s [OnValidationRequested](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.onvalidationrequested?view=aspnetcore-7.0) and [OnFieldChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.onfieldchanged?view=aspnetcore-7.0) events occur.
 
     ```cs
     public class MyCustomValidator : ComponentBase {
@@ -42,7 +42,7 @@ Follow the steps below to implement custom validation in a Grid component:
     }
     ```
 
-4. Declare the validator component in the Grid's [CustomValidators](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.CustomValidators) template. In the validator component's `DataItemValidating` event handler, check field values and add error messages with names of fields that failed validation to the dictionary.
+4. Declare the validator component in the Grid's [CustomValidators](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid.CustomValidators) template. In the validator component's `DataItemValidating` event handler, check field values and add error messages with names of the fields that failed validation to the dictionary.
 
     ```razor
     <DxGrid>
@@ -62,7 +62,7 @@ Follow the steps below to implement custom validation in a Grid component:
     }
     ```
 
-5. After you handle the `DataItemValidating` event, get the dictionary from the event arguments and write data from this dictionary to the validation message store. Call the edit context's [NotifyValidationStateChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.notifyvalidationstatechanged?view=aspnetcore-7.0) method to notify the Grid that the validation state was changed and display error messages.
+5. After you handle the `DataItemValidating` event, get the dictionary from the event arguments and copy data from this dictionary to the validation message store. Call the edit context's [NotifyValidationStateChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.notifyvalidationstatechanged?view=aspnetcore-7.0) method to notify the Grid about the validation state change and display error messages.
 
     ```cs
     void ValidateData() {
