@@ -15,7 +15,7 @@ Follow the steps below to implement custom validation in a Grid component:
 
 1. Add a [Grid](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxGrid) component to a page and bind the component to data.
 
-2. Enable edit operations in the Grid as described in the following topic: [Edit Data and Validate Input](https://docs.devexpress.com/Blazor/403454/grid/edit-data-and-validate-input).
+2. Enable edit operations in the Grid as described in the following topic: [Edit Data in Blazor Grid](https://docs.devexpress.com/Blazor/403454/components/grid/edit-data).
 
 3. Create a [validator component](https://learn.microsoft.com/en-us/aspnet/core/blazor/forms-and-input-components?view=aspnetcore-7.0#validator-components) that stores names of the fields that failed validation and the corresponding validation messages. Implement a `DataItemValidating` event that accepts the edit [model](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.model?view=aspnetcore-7.0) and a dictionary for field names and error messages as arguments. Invoke the event when the [edit context](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext?view=aspnetcore-7.0)'s [OnValidationRequested](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.onvalidationrequested?view=aspnetcore-7.0) and [OnFieldChanged](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.forms.editcontext.onfieldchanged?view=aspnetcore-7.0) events occur.
 
@@ -87,8 +87,9 @@ Follow the steps below to implement custom validation in a Grid component:
 
 ## Documentation
 
-- [Bind to Data](https://docs.devexpress.com/Blazor/403737/grid/bind-to-data)
-- [Examples](https://docs.devexpress.com/Blazor/404035/grid/examples)
+- [Bind Blazor Grid to Data](https://docs.devexpress.com/Blazor/403737/grid/bind-to-data)
+- [Validate User Input in Blazor Grid](https://docs.devexpress.com/Blazor/404443/components/grid/validation)
+- [Grid Examples](https://docs.devexpress.com/Blazor/404035/grid/examples)
 
 ## More Examples
 
