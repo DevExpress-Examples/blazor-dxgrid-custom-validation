@@ -7,6 +7,8 @@
 
 <DxGrid Data="GridDataSource"
         EditModelSaving="OnEditModelSaving"
+        CustomizeDataRowEditor="OnCustomizeDataRowEditor"
+        CustomizeEditModel="OnCustomizeEditModel"
         KeyFieldName="EmployeeId">
     <Columns>
         <DxGridCommandColumn DeleteButtonVisible="false" />
@@ -52,6 +54,13 @@
         GridDataSource = await Northwind.Employees.ToListAsync();
     }
 
+    void OnCustomizeEditModel(GridCustomizeEditModelEventArgs e) {
+        if(e.IsNew) {
+            var editModel = (Employee)e.EditModel;
+            editModel.EmployeeId = GridDataSource.Count() + 1;
+        }
+    }
+
     async Task OnEditModelSaving(GridEditModelSavingEventArgs e) {
         var editModel = (Employee)e.EditModel;
         var dataItem = e.IsNew ? new Employee() : Northwind.Employees.Find(editModel.EmployeeId);
@@ -65,6 +74,11 @@
             await Northwind.SaveChangesAsync();
             GridDataSource = await Northwind.Employees.ToListAsync();
         }
+    }
+
+    void OnCustomizeDataRowEditor(GridCustomizeDataRowEditorEventArgs e) {
+        if(e.EditSettings is ITextEditSettings settings)
+            settings.ShowValidationIcon = true;
     }
 
     public void Dispose() {
