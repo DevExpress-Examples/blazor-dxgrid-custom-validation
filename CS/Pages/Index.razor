@@ -63,12 +63,17 @@
 
     async Task OnEditModelSaving(GridEditModelSavingEventArgs e) {
         var editModel = (Employee)e.EditModel;
-        if (e.IsNew)
-            await Northwind.AddAsync(editModel);
-        else
-            e.CopyChangesToDataItem();
-        await Northwind.SaveChangesAsync();
-        GridDataSource = await Northwind.Employees.ToListAsync();
+        var dataItem = e.IsNew ? new Employee() : Northwind.Employees.Find(editModel.EmployeeId);
+        if (dataItem != null) {
+            dataItem.FirstName = editModel.FirstName;
+            dataItem.LastName = editModel.LastName;
+            dataItem.Title = editModel.Title;
+            dataItem.HireDate = editModel.HireDate;
+            if (e.IsNew)
+                await Northwind.AddAsync(dataItem);
+            await Northwind.SaveChangesAsync();
+            GridDataSource = await Northwind.Employees.ToListAsync();
+        }
     }
 
     void OnCustomizeDataRowEditor(GridCustomizeDataRowEditorEventArgs e) {
